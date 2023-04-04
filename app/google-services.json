@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1096908922528",
+    "project_id": "fiddingwithfirebase",
+    "storage_bucket": "fiddingwithfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096908922528:android:2b19f6024b54a4c84433c5",
+        "android_client_info": {
+          "package_name": "com.example.fiddlingwithfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096908922528-lf7bqg0qdbprq4mtu767oodnrg1o62ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkztolca7FBsTsnZfLtL5uztWstLyeoRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096908922528-lf7bqg0qdbprq4mtu767oodnrg1o62ec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
