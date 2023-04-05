@@ -1,0 +1,11 @@
+
+Q
+java:S1128"4Remove this unused import 'android.content.Context'.(©Ê‰è8›üÏ‹õ0
+X
+java:S1128"6Remove this unused import 'android.util.AttributeSet'.(ì®Å±ùÿÿÿÿ8›üÏ‹õ0
+U
+java:S1128"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ8›üÏ‹õ0
+V
+java:S1128"9Remove this unused import 'androidx.annotation.Nullable'.(¾Èêš8œüÏ‹õ0
+F
+java:S1068")Remove this unused "mAuth" private field.(ªĞ”’8œüÏ‹õ0
