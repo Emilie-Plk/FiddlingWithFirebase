@@ -42,11 +42,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         viewModel.getFirebaseUserMutableLiveData().observe(this, currentUser -> {
             if (currentUser != null) {
                 binding.messageTv.setText("HELLO " + currentUser.getEmail());
                 Log.i(TAG, "User isn't null");
             } else {
+                binding.messageTv.setText("USER IS NULL");
                 Log.i(TAG, "User is null");
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }

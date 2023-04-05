@@ -28,6 +28,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/email_ET" />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/confirm_password_ET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="confirm password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_ET" />
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -37,7 +49,7 @@
         android:text="Signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_ET" />
+        app:layout_constraintTop_toBottomOf="@id/confirm_password_ET" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_btn_registerActivity"

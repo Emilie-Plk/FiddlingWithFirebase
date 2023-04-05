@@ -8,6 +8,8 @@ import com.example.fiddlingwithfirebase.MainApplication;
 import com.example.fiddlingwithfirebase.repository.AuthRepository;
 import com.example.fiddlingwithfirebase.ui.login.LoginViewModel;
 import com.example.fiddlingwithfirebase.ui.main.MainViewModel;
+import com.example.fiddlingwithfirebase.ui.register.RegisterActivity;
+import com.example.fiddlingwithfirebase.ui.register.RegisterViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
@@ -39,6 +41,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new LoginViewModel(MainApplication.getApplication(), repository);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
             return (T) new MainViewModel(repository);
+        } else if (modelClass.isAssignableFrom(RegisterViewModel.class)) {
+            return (T) new RegisterViewModel(repository);
         } else
             throw new IllegalArgumentException("Unknown model class!");
     }

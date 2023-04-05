@@ -31,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         loginWithMailAndPassword();
 
         binding.registerBtn.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+
+        binding.googleSigninBtn.setOnClickListener(v -> viewModel.signInWithGoogle());
     }
 
     private void loginWithMailAndPassword() {

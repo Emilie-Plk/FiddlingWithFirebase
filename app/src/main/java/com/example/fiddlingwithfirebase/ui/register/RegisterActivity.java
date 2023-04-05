@@ -2,25 +2,26 @@ package com.example.fiddlingwithfirebase.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.fiddlingwithfirebase.databinding.ActivityRegisterBinding;
 import com.example.fiddlingwithfirebase.ui.login.LoginActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.fiddlingwithfirebase.ui.main.MainActivity;
+import com.example.fiddlingwithfirebase.utils.ViewModelFactory;
+
+import java.util.function.Consumer;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
 
-    private FirebaseAuth mAuth;
+    private RegisterViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        mAuth = FirebaseAuth.getInstance();
+        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(RegisterViewModel.class);
 
         binding.signupBtn.setOnClickListener(v -> {
             createUser();
@@ -37,37 +38,43 @@ public class RegisterActivity extends AppCompatActivity {
 
         binding.loginBtnRegisterActivity.setOnClickListener(v ->
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
+
+        checkForPasswordsMatching();
+
+        viewModel.getIsPasswordAndConfirmPasswordSame().observe(this, isPasswordTheSame -> {
+                if (Boolean.FALSE.equals(isPasswordTheSame)) {
+                    binding.confirmPasswordET.setError("Please check your password again!");
+                } else binding.confirmPasswordET.setError(null);
+            }
+        );
+    }
+
+    private void checkForPasswordsMatching() {
+        addTextWatcher(binding.passwordET, viewModel::setPasswordMutableLiveData);
+        addTextWatcher(binding.confirmPasswordET, viewModel::setConfirmationPasswordMutableLiveData);
+    }
+
+    private void addTextWatcher(EditText editText, Consumer<String> valueSetter) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                valueSetter.accept(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void createUser() {
         String email = binding.emailET.getText().toString();
         String password = binding.passwordET.getText().toString();
-
-        if (TextUtils.isEmpty(email)) {
-            binding.emailET.setError("Email cannot be empty");
-        } else if (TextUtils.isEmpty(password)) {
-            binding.passwordET.setError("Email cannot be empty");
-        } else {
-            binding.emailET.setError(null);
-            binding.passwordET.setError(null);
-
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this,
-                                "User registered successfully!",
-                                Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        } else {
-                            Toast.makeText(RegisterActivity.this,
-                                "Registration error: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-        }
+        viewModel.register(email, password);
+        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 }

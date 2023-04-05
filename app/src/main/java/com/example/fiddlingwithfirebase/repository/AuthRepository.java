@@ -9,29 +9,35 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.fiddlingwithfirebase.R;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.concurrent.Executor;
 
 public class AuthRepository {
 
     private static final int RC_SIGN_IN = 123;
     private final Application application;
     private final MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
-    // private final MutableLiveData<FirebaseUser> firebaseGoogleMutableLiveData;
     private final FirebaseAuth firebaseAuth;
+
     private GoogleSignInClient mGoogleSignInClient;
 
 
     public AuthRepository(Application application) {
-
         this.application = application;
         firebaseUserMutableLiveData = new MutableLiveData<>();
         firebaseAuth = FirebaseAuth.getInstance();
-        // requestGoogleSignIn();
     }
 
     public FirebaseAuth getFirebaseAuth() {
@@ -55,13 +61,12 @@ public class AuthRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()) {
-                    firebaseUserMutableLiveData.setValue(firebaseAuth.getCurrentUser());
+                    firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
                 } else {
                     Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     public void signIn(String email, String pass) {
@@ -69,7 +74,7 @@ public class AuthRepository {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    firebaseUserMutableLiveData.setValue(firebaseAuth.getCurrentUser());
+                    firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
                 } else {
                     Log.e(TAG, task.getException().getMessage());
                 }
@@ -77,33 +82,28 @@ public class AuthRepository {
         });
     }
 
-   /* public void requestGoogleSignIn() {
-        // Configure Google Sign In
+    public void configureGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(application.getString(R.string.default_web_client_id))
             .requestEmail()
             .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(application, gso);
-    }*/
+        mGoogleSignInClient = GoogleSignIn.getClient(application.getApplicationContext(), gso);
 
-/*    public void sigInGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        application.startActivity(signInIntent);
+        FirebaseAuth.getInstance();
+    }
 
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(signInIntent);
-        try {
-            // Google Sign In was successful, authenticate with Firebase
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-
-            firebaseAuthWithGoogle(account.getIdToken());
-        } catch (ApiException e) {
-            // Google Sign In failed, update UI appropriately
-
-        }
-
-    }*/
-/*
+    public void sigInGoogle() {
+       /* signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                .setSupported(true)
+                // Your server's client ID, not your Android client ID.
+                .setServerClientId(application.getString(R.string.default_web_client_id))
+                // Only show accounts previously used to sign in.
+                .setFilterByAuthorizedAccounts(true)
+                .build())
+            .build();*/
+    }
 
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -117,22 +117,12 @@ public class AuthRepository {
                         firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
 
                         Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
     }
 
-*/
-
     public void signOut() {
         firebaseAuth.signOut();
     }
-
-
 }
