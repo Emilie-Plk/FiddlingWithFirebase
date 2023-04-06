@@ -35,7 +35,7 @@ public class LoginViewModel extends AndroidViewModel {
         repository.signIn(email, pass);
     }
 
-    public void signInWithGoogle() {
+/*    public void signInWithGoogle() {
           repository.sigInGoogle();
-    }
+    }*/
 }

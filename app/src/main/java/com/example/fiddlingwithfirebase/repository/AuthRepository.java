@@ -82,7 +82,8 @@ public class AuthRepository {
         });
     }
 
-    public void configureGoogleSignIn() {
+    // TODO: la partie avec l'auth via Google ne marche pas !
+   /* public void configureGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(application.getString(R.string.default_web_client_id))
             .requestEmail()
@@ -94,7 +95,7 @@ public class AuthRepository {
     }
 
     public void sigInGoogle() {
-       /* signInRequest = BeginSignInRequest.builder()
+        signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                 .setSupported(true)
                 // Your server's client ID, not your Android client ID.
@@ -102,7 +103,7 @@ public class AuthRepository {
                 // Only show accounts previously used to sign in.
                 .setFilterByAuthorizedAccounts(true)
                 .build())
-            .build();*/
+            .build();
     }
 
 
@@ -121,7 +122,7 @@ public class AuthRepository {
                 }
             });
     }
-
+*/
     public void signOut() {
         firebaseAuth.signOut();
     }
